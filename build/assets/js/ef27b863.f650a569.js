@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkhello_world=self.webpackChunkhello_world||[]).push([[198],{7235:e=>{e.exports=JSON.parse('{"permalink":"/pZero/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":3,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
