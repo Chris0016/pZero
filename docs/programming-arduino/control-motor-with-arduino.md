@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 ---
 # Control Motor with Arduino
 
@@ -7,7 +7,7 @@ In the previous tutorial we went over the wiring and introduced hello programs y
 
 ## Arduino Setup Test Code
 
-```
+```cpp
 const int MAGNET_1 = 9;
 
 void setup() {
@@ -40,7 +40,7 @@ void _run_magnet(int duration, int max_pwm){
 
 The first step is to have a function that takes in a target pwm as a parameter and tells the motor to run at that pwm.
 
-```bash
+```cpp
 const int MAGNET_1 = 9;
 
 void setup() {
@@ -63,7 +63,7 @@ void run_magnet(int target_pwm){
 
 We can  observe that our motor with tape starts and immediately reaches the target_pwm. We then change our program to make it go from 0 to target_pwm very smoothly by adding a delay and incrementing our values.
 
-```
+```cpp
 const int MAGNET_1 = 9;
 static int delay = 500; //play around with this value to change transitions between pwms. 
 static int delay_before_next_loop = 5000; //Wait 5 seconds before repeating process
@@ -101,10 +101,8 @@ void run_magnet(int target_pwm){
 
 ```
 
-## FAQs
+## FAQsS
 
-What does static mean?
+[What does static mean?](/blog/understanding-static-in-arduino)
 
-Why add a delay between target_pwm's?
-
-What does unsigned long mean and why use it?
+[What does unsigned long mean and why use it?](/blog/fixing-millis-rollover)

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 3
 ---
 # OpenBCI Comms
 
@@ -11,7 +11,7 @@ In the next tutorial we'll go over how to setup the Mark IV OpenBCI headset.
 
 Our Arduino stays the same from the previous article(link me).
 
-```
+```cpp
 const int MAGNET_1 = 9;
 
 
@@ -36,7 +36,7 @@ static int curr_pwm = 0;
 static int flag = 1;  //Used for either moving up or down in pwm
 
 static int TARGET_PWM_HOLD_DURATION = 3000;  //Milliseconds, subject to change TODO tunning
-static int PAUSE_DURATION = 3000; //FOR TESTING
+static int PAUSE_DURATION = 3000; //FOR DEBBUGING
 
 unsigned long ts = millis();
 
@@ -45,6 +45,7 @@ unsigned long ts = millis();
 void setup() {
   pinMode(MAGNET_1, OUTPUT);
   analogWrite(MAGNET_1, 100); //Startup motor, for small first pwm values motor might look like it's not running. 
+  delay(2000);
   Serial.begin(9600);
  
 }
@@ -161,7 +162,7 @@ void loop() {
 
 Install cyton library for python (for Windows run w/o sudo )
 
-```
+```bash
 sudo python3 -m pip install brainflow
 ```
 
@@ -169,7 +170,7 @@ Included are also some of the code I used for debugging which can also help you 
 
 Take a look at the code and try to understand it. The next section will go over the code.
 
-```
+```python
 import serial
 import time
 import random
@@ -228,15 +229,15 @@ def arduino_ready():
 
 
 def send_data(pwmTarget):
-    ## TESTING - Send a random number to the arduino
-    delay = 0
+    ## DEBBUGING - Send a random number to the arduino
+    delay = 100
     pwmTarget = randomMultiple(PWM_LOWER_LIMIT, PWM_UPPER_LIMIT, PWM_STEP)
 		#send values between PWM_LOWER_LIMIT (50) and    PWM_UPPER_LIMIT (255) 
 		#that are multiples of PWM_STEP (5)
 		#ex: 55, 100, 75, 250, 160, ... 
   
 
-    ##TESTING - Alternate between to numbers 
+    ##DEBBUGING - Alternate between to numbers 
 
     # low = 15
     # high = 50
@@ -246,7 +247,7 @@ def send_data(pwmTarget):
     # else:
     #     pwmTarget = high
   
-    ##TESTING - Send fixed values to the arduino
+    ##DEBBUGING - Send fixed values to the arduino
 
     #delay = 150
     #pwm_max = 255
@@ -392,4 +393,4 @@ main()
 
 ## FAQ
 
-Module Not Found Error
+[PIP Module Not Found Error](https://askubuntu.com/questions/1017721/python-module-not-found-immediately-after-installing-it)

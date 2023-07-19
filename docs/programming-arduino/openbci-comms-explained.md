@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 4
 ---
 # OpenBCI Comms Explained
 
@@ -13,7 +13,8 @@ OpenBCI Cyton board reads brain signals and outputs a value between -30k and 55k
 
 ### Flow Control Diagram
 
-![1689701094852](image/openbci-comms-explained/1689701094852.png)
+![flow-diagram](./image/openbci-comms-explained/flow-diagram.png)
+
 
 ### Import  Libraries
 
@@ -80,7 +81,7 @@ def arduino_ready():
 ```python
 
 def send_data(pwmTarget):
-    ## TESTING - Send a random number to the arduino
+    ## DEBUGGING - Send a random number to the arduino
     delay = 0
     pwmTarget = randomMultiple(PWM_LOWER_LIMIT, PWM_UPPER_LIMIT, PWM_STEP)
 		#send values between PWM_LOWER_LIMIT (50) and    PWM_UPPER_LIMIT (255) 
@@ -88,7 +89,7 @@ def send_data(pwmTarget):
 		#ex: 55, 100, 75, 250, 160, ... 
   
 
-    ##TESTING - Alternate between to numbers 
+    ##DEBUGGING - Alternate between to numbers 
 
     # low = 15
     # high = 50
@@ -98,7 +99,7 @@ def send_data(pwmTarget):
     # else:
     #     pwmTarget = high
   
-    ##TESTING - Send fixed values to the arduino
+    ##DEBUGGING - Send fixed values to the arduino
 
     #delay = 150
     #pwm_max = 255
@@ -178,7 +179,7 @@ Optionally you can downsample the incoming data, however the code is commented o
 
 ### Converting OpenBCI range to PWM Range
 
-![1689701333545](image/openbci-comms-explained/1689701333545.png)
+![bci-range-to-pwm-range-diagram](./image/openbci-comms-explained/bci-range-to-pwm-range-diagram.png)
 
 We are still using auto-generated data, however our goal is to transform the range of values that the OpenBCI board may give and map it to values from 0 to 255, which represent the strength our motor will run at. Remember that we are still using the motor and not the electromagnet for rapid testing.
 

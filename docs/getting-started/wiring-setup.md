@@ -33,19 +33,19 @@ We explore why a MOSFET and not a Relay in the FAQ below.
 
 Diagram of schematics
 
-![1689645882736](image/controlling-the-electromagnet/1689645882736.png)
+![Wiring Diagram](./image/wiring-setup/wiriing-diagram.png)
 
 **Image of schematics**
 
 The project uses only one large magnet, however if you would like to use multiple magnets the wiring below also works since a terminal block is used to distribute power.
 
-Make sure to put some tape on the motor so you can see if its moving. 	
+Make sure to put some tape on the motor so you can see if its moving.
 
 ## Progamming the Arduino
 
 **Hello World Program**
 
-```
+```cpp
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -66,7 +66,7 @@ void loop() {
 
 A simple program that runs the motor at full power for 5 seconds. I recommend saving this program to test circuitry.
 
-```
+```cpp
 const int MAGNET_1 = 9;
 
 
@@ -110,7 +110,7 @@ In short, MOSFETs can switch between on and off much faster than traditional rel
 * Errors with the Output Device
   * **Linux Devices**
   * -Permission denied error. Need to add sudo to Dialout group and tty
-  * ```
+  * ```bash
     //Add your standard user to the group "dialout'
       sudo usermod -a -G dialout your-username
 
@@ -120,7 +120,7 @@ In short, MOSFETs can switch between on and off much faster than traditional rel
     //Logout/Login
     ```
   * -No device found error. Finding correct output. Should be /dev/ttyACM0 or /dev/ttyUSB0.
-  * ```
+  * ```bash
     //Run this command to find which port
     dmesg | grep tty
 

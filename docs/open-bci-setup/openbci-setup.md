@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
 ---
-# Open BCI
+# OpenBCI headset Setup
 
-At this stage we are ready to receive data from our head
+Coming Soon.

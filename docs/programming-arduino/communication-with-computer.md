@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 2
 ---
 # Communication with Computer
 
@@ -7,7 +7,7 @@ The next step is to send signals to the arduino through an external device like 
 
 ***Arduino Code v1***
 
-```
+```cpp
 const int MAGNET_1 = 9;
 
 unsigned long ts = millis();
@@ -50,7 +50,7 @@ void loop(){
 
 To run the program in linux
 
-```
+```bash
 sudo python3 myOpenBCICode.py
 ```
 
@@ -58,7 +58,7 @@ BEWARE: Python Serial communication requires sudo user permissions to run. **If 
 
 This is because libraries installed as default user are installed in a seperate folder from those installed as sudo. So when running as sudo, python will look in the sudo dir for libraries and not the regular user.
 
-```
+```python
 import serial
 import time
 
@@ -82,7 +82,7 @@ PWM_STEP = 5
 def send_data():
    
     ## TESTING - Send a random number to the arduino
-    delay = 0
+    delay = 100
     pwmTarget = randomMultiple(PWM_LOWER_LIMIT, PWM_UPPER_LIMIT, PWM_STEP)
 		#send values between PWM_LOWER_LIMIT (50) and PWM_UPPER_LIMIT (255) 
 		#that are multiples of PWM_STEP (5)
@@ -152,7 +152,7 @@ We are now going to improve on our previous arduino code by using the input sent
 
 We are receiving information information from the computer but also would like to control the motor at the same time. How can we achieve this? The solution is simple alternate between reading and controlling the motor very rapidly; so rapidly that it looks like its doing both at the same time to a human.
 
-```
+```cpp
 const int MAGNET_1 = 9;
 
 
@@ -176,7 +176,12 @@ static int TARGET_PWM_HOLD_DURATION = 3000;
 
 void setup() {
   pinMode(MAGNET_1, OUTPUT);
-  Serial.begin(9600);
+ 
+
+ analogWrite(MAGNET_1, 100); //Startup motor, for small first values it will not setup. 
+ delay(2000);
+ 
+ Serial.begin(9600);
  
 }
 
@@ -271,7 +276,7 @@ void loop() {
   Serial.print(",");
   Serial.print(curr_pwm_target);
   Serial.print(",");
-  Serial.print(curr_pwm);
+  Serial.println(curr_pwm);
   
 }
 
@@ -284,7 +289,148 @@ If you notice the code above goes from 0 to a random pwm and then back down zero
 
 ***Arduino Code v3***
 
-```
+```cpp
+const int MAGNET_1 = 9;
+
+//states
+
+typedef enum state_t {
+  S_READ,          // 0
+  S_RUNNING,       // 1
+  S_HOLD_MAX_PWM,  // 2
+  S_PAUSE,          //3
+
+};
+
+static state_t state = S_READ;
+
+//Having a delay as curr_pwm changes towards  target_pwm makes the transition between values smoother and more visible to the user(TO BE TESTED)
+static int delay_value = 100;
+
+static int prev_pwm_target = 0;
+static int curr_pwm_target = 0;
+static int curr_pwm = 0;
+
+static int flag = 1;  //Used for either moving up or down in pwm
+
+static int TARGET_PWM_HOLD_DURATION = 3000;  //Milliseconds, subject to change TODO tunning
+static int PAUSE_DURATION = 3000; //TESTING
+
+unsigned long ts = millis();
+
+
+
+void setup() {
+  pinMode(MAGNET_1, OUTPUT);
+  analogWrite(MAGNET_1, 100); //Startup motor, for small first values it will not setup. 
+  delay(2000);
+  Serial.begin(9600);
+ 
+}
+
+void loop() {
+
+  //Serial.println("state " + String(state));
+
+
+  switch (state) {
+    case S_READ:
+      {
+        // Signal Raspberry Pi that it can send the next values
+        Serial.println("Ready");
+
+  
+          while (!Serial.available()) {
+          }
+   
+
+        // Read the data from Raspberry Pi
+        String values = Serial.readStringUntil('\n');
+        values.trim();
+
+
+        // Extract the two values
+        int commaIndex = values.indexOf(',');
+        String value1Str = values.substring(0, commaIndex);
+        String value2Str = values.substring(commaIndex + 1);
+
+
+   
+        prev_pwm_target = curr_pwm_target;
+        delay_value = value1Str.toInt();  
+        curr_pwm_target = value2Str.toInt();
+
+
+        state = S_RUNNING;
+        int diff = curr_pwm_target - prev_pwm_target;
+
+        if (diff > 0)
+          flag = 1;
+        else if (diff < 0)
+          flag = -1;
+        else
+          state = S_HOLD_MAX_PWM;
+
+        //Cannot set first timer for delay within the S_RUNNING case
+        ts = millis();
+      }
+      break;
+
+    case S_RUNNING:
+      {
+
+        analogWrite(MAGNET_1, curr_pwm);
+        while ( (unsigned long)(millis() - ts) < delay_value) {
+        }
+
+        curr_pwm += flag;
+
+        if ((curr_pwm_target == curr_pwm && flag == 1) || (curr_pwm_target == curr_pwm && flag == -1)) {
+          state = S_HOLD_MAX_PWM;
+        }
+
+        ts = millis();
+      }
+      break;
+
+    case S_HOLD_MAX_PWM:
+      {
+        //Serial.println("STATE HOLD");
+        analogWrite(MAGNET_1, curr_pwm);
+        if ( (unsigned long)(millis() - ts) > TARGET_PWM_HOLD_DURATION) {
+          state = S_READ; //S_PAUSE for testing 
+  
+          ts = millis();  
+        }
+        break;
+      }
+    case S_PAUSE:
+      {
+        analogWrite(MAGNET_1, 0);
+        while (  (unsigned long) (millis() - ts) < IDLE_DURATION) {
+          //do nothing
+        }
+        ts = millis();
+        state = S_READ;
+      }
+      break;
+    default:
+      {
+        state = S_RUNNING;
+  
+      }
+      break;
+  }
+
+  Serial.print(delay_value);
+  Serial.print(",");
+  Serial.print(curr_pwm_target);
+  Serial.print(",");
+  Serial.print(curr_pwm);
+  Serial.print(",");
+  Serial.println(String(flag));
+
+}
 
 
 ```
