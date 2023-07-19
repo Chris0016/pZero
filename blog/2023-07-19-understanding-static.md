@@ -2,7 +2,7 @@
 slug:  understanding-static-in-arduino
 title: Understanding "Static" in Arduino
 authors: [perez]
-tags: [arduino, static]
+tags: []
 ---
 # Understanding "Static" in Arduino: A Key Concept for Efficient Programming
 
@@ -30,6 +30,6 @@ Understanding the concept of "static" in Arduino programming is crucial for effi
 
 ### Reaching Out
 
-Join the[ discord server ](../docs/intro)to ask any questions you may have or propose changes/ideas.
+Join the[ discord server ](/docs/intro)to ask any questions you may have or propose changes/ideas.
 
 We also have a [Youtube channel ](https://www.youtube.com/@dynamicSuspense00)available with tutorial videos.

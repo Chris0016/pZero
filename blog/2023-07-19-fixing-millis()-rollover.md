@@ -3,7 +3,7 @@ slug: fixing-millis-rollover
 title: Fixing the millis() Rollover Issue
 authors: [perez]
  
-tags: [arduino, millis(), datatypes, rollover]
+tags: []
 ---
 # Fixing the millis() Rollover Issue: Leveraging the "unsigned long" Data Type for Accurate Timing in Arduino
 
@@ -39,6 +39,6 @@ For an even more in detail explanation you can check out this [stackexchange lin
 
 ### Reaching Out
 
-Join the[ discord server ](../docs/intro)to ask any questions you may have or propose changes/ideas.
+Join the[ discord server ](/docs/intro)to ask any questions you may have or propose changes/ideas.
 
 We also have a [Youtube channel ](https://www.youtube.com/@dynamicSuspense00)available with tutorial videos.

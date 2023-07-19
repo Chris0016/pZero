@@ -2,7 +2,7 @@
 slug: welcome
 title: Welcome
 authors: [perez]
-tags: [hello]
+tags: []
 ---
 **Welcome** to the Ferrofluid Community, where artists, scientists, and
 enthusiasts unite to explore the captivating world of controlling
@@ -16,3 +16,10 @@ your imagination soar as we merge art, technology, and the extraordinary
 mesmerizing fusion. Welcome to the Ferrofluid Community—a place where
 imagination meets innovation, and where the extraordinary becomes
 reality. Join us today and be part of this transformative journey!
+
+
+### Reaching Out
+
+Join the[ discord server ](https://discord.gg/SvfMjNP4)to ask any questions you may have or propose changes/ideas.
+
+We also have a [Youtube channel ](https://www.youtube.com/channel/UCo-W0-K8zRfL9zwv4jWnePw)available with tutorial videos.
